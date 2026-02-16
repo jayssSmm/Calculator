@@ -84,7 +84,7 @@ minus.textContent=' - '
 x.textContent=' X '
 slash.textContent=' / '
 equal.textContent=' = '
-negation.textContent=' + / - '
+negation.textContent='  '
 decimal.textContent='.'
 backspace.textContent=' Backspace '
 clearAll.textContent=' Clear '
@@ -92,8 +92,15 @@ percent.textContent=' % '
 
 screen1.style.width='400px'
 screen1.style.height='100px'
+screen1.style.textAlign='right'
+screen1.style.padding='30px'
+screen1.style.boxSizing='border-box'
+
 screen2.style.width='400px'
 screen2.style.height='100px'
+screen2.style.textAlign='right'
+screen2.style.padding='30px'
+screen2.style.boxSizing='border-box'
 
 const btn=document.getElementsByClassName('btn')
 
@@ -114,10 +121,28 @@ for (let i=0; i<btn.length;i++){
 
 //JS
 
-const specialCharacter=['+','-','/','X','=','','%']
+const specialCharacter=['+','/','X','=','-','','%']
+const specialCharacterElements=[plus,x,slash,minus,percent]
+
+function firstValue(arr){
+    let sum=''
+    for (let i=0;i<arr.length;i++){
+        if (arr[i]){
+            sum+=arr[i]
+            if (parseFloat(sum)) return sum
+        }
+    }
+}
+
+function operatorOnOff(a){
+    for (let i=0;i<specialCharacterElements.length;i++){
+        specialCharacterElements[i].disabled=a
+    }
+}
 
 function operate(arr){
-    let value=parseFloat(arr[0])
+    let value=parseFloat(firstValue(arr))
+    let value_holder=value
     let flag
     for (let i=0;i<arr.length;i++){
         if (specialCharacter.includes(arr[i])){
@@ -131,9 +156,11 @@ function operate(arr){
             else if (flag==='subtract') value-=parseFloat(arr[i])
             else if (flag==='divide') value/=parseFloat(arr[i])
             else if (flag==='multiply') value*=parseFloat(arr[i])
-            else if (flag==='percent') value+=parseFloat(arr[i])*.01
+            else if (flag==='percent') value*=parseFloat(arr[i])*.01
         }
-    }return value
+    }
+    if (arr[0]) return value
+    else return value-value_holder
 }
 
 
@@ -141,6 +168,7 @@ let arrString=''
 let expression=[]
 let value
 let decimal_flag=false
+
 container.addEventListener('click',(element)=>{
     let target=element.target.textContent
     arrString+=target
@@ -149,26 +177,73 @@ container.addEventListener('click',(element)=>{
 
     if (target==' = '){
         expression=arrString.split(' ')
+
         value=operate(expression)
+
         screen2.textContent=value
         screen1.textContent=arrString
         arrString=value
-    }else if(target==' Clear '){
+        decimal_flag=false
+        operatorOnOff(false)
+    }
+    else if(target==' Clear '){
         screen1.textContent=''
         screen2.textContent=''
-        value=0
         arrString=''
-        expression=[]
         decimal_flag=false
-    }else if(target===' Backspace '){
+        operatorOnOff(false)
+    }
+    else if(target===' Backspace '){
         arrString=arrString.trim().slice(0,-1)
         screen2.textContent=arrString
-    }else if(target==='.'){
+    }
+    else if(target==='.'){
         decimal_flag=true
-    }else if (!(target==='.') && specialCharacter.includes(target.trim())){
+    }
+    else if (specialCharacter.includes(target.trim())){
         decimal_flag=false
+        operatorOnOff(true)
+    }else{
+        operatorOnOff(false)
     }
 
     if (decimal_flag) decimal.disabled=true
     else decimal.disabled=false
+})
+
+container.addEventListener('keydown',(element)=>{
+    switch (element.key){
+        case '1':
+            arrString+=1
+            break
+        case '2':
+            arrString+=2
+            break
+        case '3':
+            arrString+=3
+            break
+        case '4':
+            arrString+=4
+            break
+        case '5':
+            arrString+=5
+            break
+        case '6':
+            arrString+=6
+            break
+        case '7':
+            arrString+=7
+            break
+        case '8':
+            arrString+=8
+            break
+        case '9':
+            arrString+=9
+            break
+        case '0':
+            arrString+=0
+            break
+    }
+    screen2.textContent=arrString
+    console.log(arrString)
 })
