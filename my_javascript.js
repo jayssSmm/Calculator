@@ -211,3 +211,40 @@ container.addEventListener('click',(element)=>{
     else decimal.disabled=false
 })
 
+
+container.addEventListener('keydown',(element)=>{
+    switch (element.key){
+        case '1':
+            arrString+=1
+            break
+        case '2':
+            arrString+=2
+            break
+        case '3':
+            arrString+=3
+            break
+        case '4':
+            arrString+=4
+            break
+        case '5':
+            arrString+=5
+            break
+        case '6':
+            arrString+=6
+            break
+        case '7':
+            arrString+=7
+            break
+        case '8':
+            arrString+=8
+            break
+        case '9':
+            arrString+=9
+            break
+        case '0':
+            arrString+=0
+            break
+    }
+    screen2.textContent=arrString
+    console.log(arrString)
+})
