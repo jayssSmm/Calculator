@@ -65,7 +65,7 @@ All calculator buttons and screens are dynamically created inside script.js.
 
 Clone the repository:
 
-git clone https://github.com/your-username/calculator.git
+git clone https://github.com/jayssSmm/Calculator
 
 
 Navigate into the project directory:
